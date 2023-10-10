@@ -1,7 +1,16 @@
-import React from 'react';
+import {useState} from 'react';
 import QuestionCard from './components/QuestionCard';
 
+const TOTOL_QUESTIONS = 10;
+
 function App() {
+  const [loading, setLoading] = useState(false)
+  const [questions, setQuestions] = useState([])
+  const [userAnswers, setUserAnswers] = useState([])
+  const [number, setNumber] = useState(0)
+  const [score, setScore] = useState(0)
+  const [gameOver, setGameOver] = useState(true)
+
 const startTrivia = async () => {
 }
 
@@ -19,7 +28,14 @@ const nextQuestion = () => {
       </button>
       <p className='score'>Score:</p>
       <p>Loading Question ...</p>
-      <QuestionCard />
+      <QuestionCard
+       questionNr={number + 1}
+        totalQuestions={TOTOL_QUESTIONS}
+        question={questions[number].question}
+        answers={questions[number].answers}
+        userAnswer={userAnswers ? userAnswers[number] : undefined}
+        callback={checkAnswer}
+       />
       <button className='next' onClick={nextQuestion}>
         Next Question
       </button>
