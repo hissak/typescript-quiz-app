@@ -1,21 +1,42 @@
 import {useState} from 'react';
 import QuestionCard from './components/QuestionCard';
 import {fetchQuizQuestions} from './API';
-import {Difficulty} from './API';
+import {Difficulty, QuestionState} from './API';
+import { type } from 'os';
 
 const TOTOL_QUESTIONS = 10;
 
+type AnswerObject = {
+  question: string
+  answer: string
+  correct: boolean
+  correctAnswer: string
+}
+
 function App() {
   const [loading, setLoading] = useState(false)
-  const [questions, setQuestions] = useState([])
-  const [userAnswers, setUserAnswers] = useState([])
+  const [questions, setQuestions] = useState<QuestionState[]>([])
+  const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([])
   const [number, setNumber] = useState(0)
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
 
 const startTrivia = async () => {
+  setLoading(true)
+  setGameOver(false)
+
+  const newQuestions = await fetchQuizQuestions(
+    TOTOL_QUESTIONS,
+    Difficulty.EASY
+  )
+
+  setQuestions(newQuestions)
+  setScore(0)
+  setUserAnswers([])
+  setNumber(0)
+  setLoading(false)
 }
-console.log(fetchQuizQuestions(TOTOL_QUESTIONS, Difficulty.EASY))
+console.log('QUESTIONS', questions)
 
 const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
 }
